@@ -11,6 +11,7 @@ public class TestController {
 	public String getMessage(Model model) {
 		model.addAttribute("myName", "Noor");
 		
+		
 		return "message.jsp";
 	}
 }
