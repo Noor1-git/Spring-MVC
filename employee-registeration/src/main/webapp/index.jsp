@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Student Information Form</title>
+    <title>Employee Registration Form</title>
     <style>
         /* Global styles */
         body {
@@ -29,11 +29,13 @@
             padding: 20px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
         }
+        
         label {
             display: block;
             margin-bottom: 10px;
             font-weight: bold;
         }
+        
         input[type="text"],
         input[type="number"] {
             width: 100%;
@@ -42,9 +44,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        input[type="radio"] {
-            margin-right: 5px;
-        }
+        
         button {
             background-color: #0073e6;
             color: white;
@@ -53,6 +53,7 @@
             cursor: pointer;
             border-radius: 5px;
         }
+        
         button:hover {
             background-color: #005bb5;
         }
@@ -60,7 +61,7 @@
 </head>
 <body>
 
-<h1>Student Information Form</h1>
+<h1>Employee Registration Form</h1>
 
 <form action="save" method="post">
     <label for="name">Name:</label>
@@ -72,12 +73,11 @@
     <label for="contact">Contact:</label>
     <input type="number" id="contact" name="contact" required>
     
-    <label>Gender:</label>
-    <input type="radio" name="gender" value="Male" id="male" required>
-    <label for="male">Male</label>
+    <label for="designation">Designation:</label>
+    <input type="text" id="designation" name="designation" required>
     
-    <input type="radio" name="gender" value="Female" id="female" required>
-    <label for="female">Female</label>
+    <label for="salary">Salary:</label>
+    <input type="number" id="salary" name="salary" required>
     
     <br><br>
     <button type="submit">Submit</button>

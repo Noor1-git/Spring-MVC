@@ -24,4 +24,35 @@ public class TestController {
 		mav.addObject("gender", gender);
 		return mav;
 	}
+	
+//	 @PostMapping("/save")
+//	    public String save(ServletRequest request, ModelMap modelMap) {
+//	        String name = request.getParameter("name");
+//	        String email = request.getParameter("email");
+//	        String contact = request.getParameter("contact");
+//	        String gender = request.getParameter("gender");
+//
+//	        modelMap.addAttribute("name", name);
+//	        modelMap.addAttribute("email", email);
+//	        modelMap.addAttribute("contact", contact);
+//	        modelMap.addAttribute("gender", gender);
+//
+//	        return "details";
+//	    }
+	
+	
+//	@PostMapping("/save")
+//    public String save(ServletRequest request, Model model) {
+//        String name = request.getParameter("name");
+//        String email = request.getParameter("email");
+//        String contact = request.getParameter("contact");
+//        String gender = request.getParameter("gender");
+//
+//        model.addAttribute("name", name);
+//        model.addAttribute("email", email);
+//        model.addAttribute("contact", contact);
+//        model.addAttribute("gender", gender);
+//
+//        return "details";
+//    }
 }
