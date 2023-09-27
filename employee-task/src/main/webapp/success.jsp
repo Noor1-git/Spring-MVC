@@ -100,7 +100,9 @@ table tbody tr:nth-child(even) {
 				<td>Designation</td>
 				<td>Salary</td>
 				<td>Password</td>
+				<td>Update</td>
 				<td>View Tasks</td>
+				<td>Delete</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -116,7 +118,9 @@ table tbody tr:nth-child(even) {
 				<td><%=employee.getDesignation()%></td>
 				<td><%=employee.getSalary()%></td>
 				<td><%=employee.getPassword()%></td>
+				<td><a href="preupdateemployee?employeeId=<%=employee.getId()%>" class="back-button">Update</a></td>
 				<td><a href="taskPage?employeeId=<%=employee.getId()%>" class="back-button">View Tasks</a></td>
+				<td><a href="deleteemployee?employeeId=<%=employee.getId()%>" class="back-button">Delete</a></td>
 			</tr>
 			<%
 			}

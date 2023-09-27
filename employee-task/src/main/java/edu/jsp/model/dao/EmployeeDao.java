@@ -114,4 +114,17 @@ public class EmployeeDao {
 			return false;
 		}
 	}
+	
+	public Employee deleteEmployee(Employee employee) {
+		EntityTransaction transaction = manager.getTransaction();
+		transaction.begin();
+		try {
+			manager.remove(employee);
+			transaction.commit();
+			return employee;
+		}catch(Exception e) {
+			return null;
+		}
+		
+	}
 }

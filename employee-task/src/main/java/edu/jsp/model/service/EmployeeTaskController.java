@@ -23,25 +23,6 @@ public class EmployeeTaskController {
 	EmployeeDao dao = new EmployeeDao();
 	TaskDao taskDao = new TaskDao();
 
-	@GetMapping("/deletetask")
-	public String deleteTask(ServletRequest request, Model model) {
-		int employeeId = Integer.parseInt(request.getParameter("employeeId"));
-		long taskId = Long.parseLong(request.getParameter("taskId"));
-
-		// Delete the task
-		Task deletedTask = taskDao.deleteTask(taskId);
-
-		if (deletedTask != null) {
-			// Task was successfully deleted
-			Employee employee = dao.searchEmployeeById(employeeId);
-			request.setAttribute("employee", employee);
-			return "taskPage.jsp";
-		} else {
-			// Task deletion failed, you can handle this case accordingly
-			return "failure.jsp";
-		}
-	}
-
 	@PostMapping("/saveemployee")
 	public String saveEmployee(ServletRequest request, Model model) {
 
@@ -93,7 +74,7 @@ public class EmployeeTaskController {
 		boolean isCompleted = Boolean.parseBoolean(request.getParameter("isCompleted"));
 
 		String dateString = dueDate;
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = null;
 		try {
 			date = dateFormat.parse(dateString);
@@ -109,6 +90,7 @@ public class EmployeeTaskController {
 		Task task = new Task(taskName, description, date, isCompleted, employee);
 		List<Task> tasks = employee.getTasks();
 		tasks.add(task);
+		taskDao.saveTask(task);
 		if (dao.mergeEmployee(employee)) {
 			model.addAttribute("tasks", tasks);
 			return "taskPage.jsp";
@@ -137,4 +119,122 @@ public class EmployeeTaskController {
 			return "failure.jsp";
 		}
 	}
+
+	@GetMapping("/deleteemployee")
+	public String deleteEmployee(ServletRequest request, Model model) {
+
+		int id = Integer.parseInt(request.getParameter("employeeId"));
+		Employee employee = dao.searchEmployeeById(id);
+		if (employee != null) {
+			if (dao.deleteEmployee(employee) != null) {
+				List<Employee> employees = dao.getAllEmployees();
+				model.addAttribute("employees", employees);
+				return "success.jsp";
+			} else {
+				return "failure.jsp";
+			}
+
+		} else {
+			return "failure.jsp";
+		}
+	}
+
+	@GetMapping("/preupdateemployee")
+	public String preUpdateEmployee(ServletRequest request, Model model) {
+
+		int id = Integer.parseInt(request.getParameter("employeeId"));
+		Employee employee = dao.searchEmployeeById(id);
+		request.setAttribute("employee", employee);
+		return "updateemployee.jsp";
+	}
+
+	@GetMapping("/postupdateemployee")
+	public String postUpdateEmployee(ServletRequest request, Model model) {
+		int id = Integer.parseInt(request.getParameter("employeeId"));
+		Employee employee = dao.searchEmployeeById(id);
+		employee.setName(request.getParameter("name"));
+		employee.setEmail(request.getParameter("email"));
+		employee.setContact(request.getParameter("contact"));
+		employee.setDesignation(request.getParameter("designation"));
+		employee.setSalary(Double.parseDouble(request.getParameter("salary")));
+		employee.setPassword(request.getParameter("password"));
+
+		if (dao.mergeEmployee(employee)) {
+			List<Employee> employees = dao.getAllEmployees();
+			model.addAttribute("employees", employees);
+			return "success.jsp";
+		} else {
+			return "failure.jsp";
+		}
+	}
+
+	@GetMapping("/preupdatetask")
+	public String preUpdateTask(ServletRequest request, Model model) {
+		long id = Long.parseLong(request.getParameter("taskId"));
+		Task task = taskDao.getTask(id);
+		if (task != null) {
+			request.setAttribute("task", task);
+			return "updatetask.jsp";
+		} else {
+			return "failure.jsp";
+		}
+	}
+
+	@GetMapping("/postupdatetask")
+	public String postUpdateTask(ServletRequest request, Model model) {
+
+		long id = Long.parseLong(request.getParameter("taskId"));
+
+		Task task = taskDao.getTask(id);
+
+		if (task != null) {
+
+			task.setTaskName(request.getParameter("taskName"));
+			task.setDescription(request.getParameter("description"));
+
+			String dueDate = request.getParameter("dueDate");
+
+			boolean isCompleted = Boolean.parseBoolean(request.getParameter("isCompleted"));
+
+			String dateString = dueDate;
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = null;
+
+			try {
+				date = dateFormat.parse(dateString);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
+			task.setDueDate(date);
+			task.setCompleted(isCompleted);
+
+			List<Task> tasks = task.getEmployee().getTasks();
+			model.addAttribute("tasks", tasks);
+			return "taskPage.jsp";
+		} else {
+			return "failure.jsp";
+		}
+	}
+
+	@GetMapping("/deletetask")
+	public String deleteTask(ServletRequest request, Model model) {
+
+		long id = Long.parseLong(request.getParameter("taskId"));
+
+		Task task = taskDao.getTask(id);
+
+		if (task != null) {
+			if (taskDao.deleteTask(task) != null) {
+				List<Task> tasks = task.getEmployee().getTasks();
+				model.addAttribute("tasks", tasks);
+				return "taskPage.jsp";
+			} else {
+				return "failure.jsp";
+			}
+		} else {
+			return "failure.jsp";
+		}
+	}
+
 }

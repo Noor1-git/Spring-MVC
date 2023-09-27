@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="edu.jsp.model.dto.Task"%>
 <%@page import="edu.jsp.model.dto.Employee"%>
 <html>
 <head>
@@ -86,28 +87,23 @@
 
 </head>
 <body>
-	<%Employee employee= (Employee)request.getAttribute("employee");%>
-    <h2>Employee Information Form</h2>
-    <form action="postupdateemployee">
-        <input name="employeeId" placeholder="<%=employee.getId()%>" readonly="readonly" value="<%=employee.getId()%>">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" placeholder="<%=employee.getName()%>" required>
-        <br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="<%=employee.getEmail()%>" required>
-        <br>
-        <label for="contact">Contact:</label>
-        <input type="text" id="contact" name="contact" placeholder="<%=employee.getContact()%>" required>
-        <br>
-        <label for="designation">Designation:</label>
-        <input type="text" id="designation" name="designation" placeholder="<%=employee.getDesignation()%>" required>
-        <br>
-        <label for="salary">Salary:</label>
-        <input type="number" id="salary" name="salary" placeholder="<%=employee.getSalary()%>" step="0.01" required>
-        <br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="<%=employee.getPassword()%>" required>
-        <br>
+	<%Task task= (Task)request.getAttribute("task");%>
+    <h2>Task Information Form</h2>
+    <form action="postupdatetask">
+        <input name="taskId" placeholder="<%=task.getTaskId()%>" readonly="readonly" value="<%=task.getTaskId()%>">
+        
+         <label for="taskName">Task Name:</label>
+        <input type="text" id="taskName" name="taskName" placeholder="<%=task.getTaskName()%>" required><br><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" placeholder="<%=task.getDescription()%>" required></textarea><br><br>
+
+        <label for="dueDate">Due Date:</label>
+        <input type="date" id="dueDate" name="dueDate" placeholder="<%=task.getDueDate()%>" required><br><br>
+
+        <label for="isCompleted">Is Completed:</label>
+        <input type="checkbox" id="isCompleted" placeholder="<%=task.isCompleted()%>" name="isCompleted"><br><br>
+
         <input type="submit" value="Submit">
     </form>
 </body>

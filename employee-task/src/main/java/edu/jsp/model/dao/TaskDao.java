@@ -12,16 +12,35 @@ public class TaskDao {
 	EntityManagerFactory factory=Persistence.createEntityManagerFactory("employee_task");
 	EntityManager manager=factory.createEntityManager();
 	
-	public Task deleteTask(long taskId) {
-		EntityTransaction transaction = manager.getTransaction();
-		Task task = manager.find(Task.class, taskId);
-		if (task == null) {
-			return null;
-		} else {
+	public Task deleteTask(Task task) {
+		EntityTransaction transaction=manager.getTransaction();
 			transaction.begin();
 			manager.remove(task);
 			transaction.commit();
 			return task;
+	}
+	
+	public boolean mergeTask(Task task) {
+		EntityTransaction transaction = manager.getTransaction();
+		transaction.begin();
+		try {
+			manager.merge(task);
+			transaction.commit();
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
+	}
+	
+	public Task saveTask(Task task) {
+		EntityTransaction transaction=manager.getTransaction();
+		transaction.begin();
+		manager.persist(task);
+		transaction.commit();
+		return task;
+	}
+	
+	public Task getTask(long id) {
+		return manager.find(Task.class, id);
 	}
 }
