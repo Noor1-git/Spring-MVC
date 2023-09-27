@@ -10,7 +10,7 @@ import edu.jsp.model.dto.Task;
 public class TaskDao {
 
 	EntityManagerFactory factory=Persistence.createEntityManagerFactory("employee_task");
-	EntityManager manager=factory.createEntityManager();
+	public EntityManager manager=factory.createEntityManager();
 	
 	public Task deleteTask(Task task) {
 		EntityTransaction transaction=manager.getTransaction();
@@ -20,15 +20,15 @@ public class TaskDao {
 			return task;
 	}
 	
-	public boolean mergeTask(Task task) {
+	public Task mergeTask(Task task) {
 		EntityTransaction transaction = manager.getTransaction();
 		transaction.begin();
 		try {
 			manager.merge(task);
 			transaction.commit();
-			return true;
+			return task;
 		} catch (Exception e) {
-			return false;
+			return null;
 		}
 	}
 	

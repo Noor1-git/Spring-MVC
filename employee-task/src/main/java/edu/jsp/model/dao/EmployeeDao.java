@@ -1,6 +1,5 @@
 package edu.jsp.model.dao;
 
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,42 +9,11 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import edu.jsp.model.dto.Employee;
-import edu.jsp.model.dto.Task;
 
 public class EmployeeDao {
 
 	EntityManagerFactory factory = Persistence.createEntityManagerFactory("employee_task");
 	EntityManager manager = factory.createEntityManager();
-
-	public Task deleteTask(int empId, int taskId) {
-		EntityTransaction transaction = manager.getTransaction();
-		try {
-			transaction.begin();
-			Employee employee = manager.find(Employee.class, empId);
-			List<Task> tasks = employee.getTasks();
-
-			Iterator<Task> iterator = tasks.iterator();
-			while (iterator.hasNext()) {
-				Task task = iterator.next();
-				if (task.getTaskId() == taskId) {
-					iterator.remove(); // Safely remove the task
-					manager.merge(employee); // Save the updated employee
-					transaction.commit();
-					return task;
-				}
-			}
-		} catch (Exception e) {
-			if (transaction != null && transaction.isActive()) {
-				transaction.rollback();
-			}
-			e.printStackTrace(); // Handle exceptions appropriately
-		} finally {
-			if (transaction != null && transaction.isActive()) {
-				transaction.rollback();
-			}
-		}
-		return null;
-	}
 
 	public Employee searchEmployeeById(int id) {
 
@@ -54,18 +22,6 @@ public class EmployeeDao {
 			return null;
 		} else {
 			return employee;
-		}
-	}
-
-	public boolean mergeEmployee(Employee employee) {
-		EntityTransaction transaction = manager.getTransaction();
-		transaction.begin();
-		try {
-			manager.merge(employee);
-			transaction.commit();
-			return true;
-		} catch (Exception e) {
-			return false;
 		}
 	}
 
@@ -80,22 +36,27 @@ public class EmployeeDao {
 			return null;
 		}
 	}
-
+	
 	public List<Employee> getAllEmployees() {
 		try {
-			// Begin a transaction
 			manager.getTransaction().begin();
-
-			// Create and execute the JPQL query
 			List<Employee> employees = manager.createQuery("SELECT e FROM Employee e", Employee.class).getResultList();
-
-			// Commit the transaction
 			manager.getTransaction().commit();
-
 			return employees;
 		} catch (Exception e) {
-
 			return null;
+		}
+	}
+
+	public boolean mergeEmployee(Employee employee) {
+		EntityTransaction transaction = manager.getTransaction();
+		transaction.begin();
+		try {
+			manager.merge(employee);
+			transaction.commit();
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
 	}
 
@@ -114,7 +75,7 @@ public class EmployeeDao {
 			return false;
 		}
 	}
-	
+
 	public Employee deleteEmployee(Employee employee) {
 		EntityTransaction transaction = manager.getTransaction();
 		transaction.begin();
@@ -122,9 +83,8 @@ public class EmployeeDao {
 			manager.remove(employee);
 			transaction.commit();
 			return employee;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			return null;
 		}
-		
 	}
 }

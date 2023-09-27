@@ -209,9 +209,13 @@ public class EmployeeTaskController {
 			task.setDueDate(date);
 			task.setCompleted(isCompleted);
 
-			List<Task> tasks = task.getEmployee().getTasks();
-			model.addAttribute("tasks", tasks);
-			return "taskPage.jsp";
+			if (taskDao.mergeTask(task)!=null) {
+				List<Task> tasks = task.getEmployee().getTasks();
+				model.addAttribute("tasks", tasks);
+				return "taskPage.jsp";
+			} else {
+				return "failure.jsp";
+			}
 		} else {
 			return "failure.jsp";
 		}
