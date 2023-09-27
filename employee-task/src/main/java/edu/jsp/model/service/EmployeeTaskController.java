@@ -102,8 +102,8 @@ public class EmployeeTaskController {
 		}
 
 		Employee employee = dao.searchEmployee(email);
-		
-		if (employee==null) {
+
+		if (employee == null) {
 			return "failure.jsp";
 		}
 		Task task = new Task(taskName, description, date, isCompleted, employee);
@@ -123,17 +123,17 @@ public class EmployeeTaskController {
 		model.addAttribute("employees", employees);
 		return "success.jsp";
 	}
-	
+
 	@GetMapping("/taskPage")
-	public String getTasks(ServletRequest request,Model model) {
-		
-		int id=Integer.parseInt(request.getParameter("employeeId"));
-		Employee employee=dao.searchEmployeeById(id);
-		if (employee!=null) {
-			List<Task> tasks=employee.getTasks();
+	public String getTasks(ServletRequest request, Model model) {
+
+		int id = Integer.parseInt(request.getParameter("employeeId"));
+		Employee employee = dao.searchEmployeeById(id);
+		if (employee != null) {
+			List<Task> tasks = employee.getTasks();
 			model.addAttribute("tasks", tasks);
 			return "taskPage.jsp";
-		}else {
+		} else {
 			return "failure.jsp";
 		}
 	}
